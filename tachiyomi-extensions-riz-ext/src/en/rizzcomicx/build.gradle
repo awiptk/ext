@@ -1,9 +1,0 @@
-ext {
-    extName = 'Rizz Comic X'
-    extClass = '.RizzComicX'
-    themePkg = 'mangathemesia'
-    baseUrl = 'https://rizzfables.com'
-    overrideVersionCode = 27
-}
-
-apply from: "$rootDir/common.gradle"
