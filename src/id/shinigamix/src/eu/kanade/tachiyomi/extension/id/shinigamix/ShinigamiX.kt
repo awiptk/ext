@@ -239,17 +239,19 @@ class ShinigamiX : ConfigurableSource, HttpSource() {
     }
 
     override fun pageListParse(response: Response): List<Page> {
-        val result = response.parseAs<ShinigamiXPageListDto>()
+    val result = response.parseAs<ShinigamiXPageListDto>()
 
-        return result.pageList.chapterPage.pages.mapIndexedNotNull { index, imageName ->
-            // Exclude static image starts with 999 like "999-2-b2c059.jpg"
-            if (imageName.startsWith("999-")) {
-                null
-            } else {
-                Page(index = index, imageUrl = "$cdnUrl${result.pageList.chapterPage.path}$imageName")
-            }
+    return result.pageList.chapterPage.pages.mapIndexedNotNull { index, imageName ->
+        // Exclude static image starts with 999 like "999-2-b2c059.jpg"
+        if (imageName.startsWith("999-")) {
+            null
+        } else {
+            val originalUrl = "$cdnUrl${result.pageList.chapterPage.path}$imageName"
+            val newUrl = "https://resize$originalUrl"
+            Page(index = index, imageUrl = newUrl)
         }
     }
+}
 
     override fun fetchImageUrl(page: Page): Observable<String> = Observable.just(page.imageUrl!!)
 
